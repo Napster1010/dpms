@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/branch")
 public class HospitalController {
@@ -20,5 +22,11 @@ public class HospitalController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         else
             return new ResponseEntity<>(insertedBranch, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Branch>> getAllBranches(){
+        List<Branch> branches = hospitalService.getAllBranches();
+        return new ResponseEntity<>(branches, HttpStatus.OK);
     }
 }

@@ -1,9 +1,11 @@
 package com.dpms.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "AppointmentDetails")
 @Table(name = "appointment_details")
@@ -26,9 +28,8 @@ public class AppointmentDetails {
     @JoinColumn(name = "branch_id", referencedColumnName = "id")
     private Branch branch;
 
-    @Column(name = "scheduled_time")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date scheduledTime;
+    @Column(name = "date_of_appointment")
+    private LocalDate dateOfAppointment;
 
     @Column(name = "status")
     private String status;
@@ -40,7 +41,7 @@ public class AppointmentDetails {
                 ", patient=" + patient +
                 ", doctor=" + doctor +
                 ", branch=" + branch +
-                ", scheduledTime=" + scheduledTime +
+                ", dateOfAppointment=" + dateOfAppointment +
                 ", status='" + status + '\'' +
                 '}';
     }
@@ -48,11 +49,11 @@ public class AppointmentDetails {
     public AppointmentDetails() {
     }
 
-    public AppointmentDetails(Patient patient, Doctor doctor, Branch branch, Date scheduledTime, String status) {
+    public AppointmentDetails(Patient patient, Doctor doctor, Branch branch, LocalDate dateOfAppointment, String status) {
         this.patient = patient;
         this.doctor = doctor;
         this.branch = branch;
-        this.scheduledTime = scheduledTime;
+        this.dateOfAppointment = dateOfAppointment;
         this.status = status;
     }
 }

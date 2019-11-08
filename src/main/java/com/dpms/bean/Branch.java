@@ -1,5 +1,6 @@
 package com.dpms.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity(name = "Branch")
 @Table(name = "branch")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

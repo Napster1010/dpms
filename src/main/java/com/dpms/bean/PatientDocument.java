@@ -3,8 +3,8 @@ package com.dpms.bean;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 @Entity(name = "PatientDocument")
 @Table(name = "patient_document")
@@ -27,8 +27,7 @@ public class PatientDocument {
     private User user;
 
     @Column(name = "timestamp")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @Override
     public String toString() {
@@ -44,7 +43,7 @@ public class PatientDocument {
     public PatientDocument() {
     }
 
-    public PatientDocument(Patient patient, byte[] document, User user, Date timestamp) {
+    public PatientDocument(Patient patient, byte[] document, User user, LocalDateTime timestamp) {
         this.patient = patient;
         this.document = document;
         this.user = user;
