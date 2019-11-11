@@ -21,4 +21,9 @@ public class DoctorService {
         List<Doctor> doctors = doctorRepository.findAll();
         return doctors;
     }
+
+    public Doctor getDocotrById(Long doctorId){
+        Doctor doctor = doctorRepository.getOne(doctorId);
+        return doctor;
+    }
 }
