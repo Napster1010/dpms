@@ -15,8 +15,8 @@ public class UserService {
         return insertedUser;
     }
 
-    public User authenticateUser(String username, String password, String userType){
-        User user = userRepository.findByUsernameAndPasswordAndUserType(username, password, userType);
+    public User authenticateUser(String username, String password){
+        User user = userRepository.findByUsernameAndPassword(username, password);
         return user;
     }
 }

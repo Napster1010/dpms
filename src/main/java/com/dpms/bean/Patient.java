@@ -24,6 +24,13 @@ public class Patient {
     @Column(name = "address")
     private String address;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
+
+    public Patient() {
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -31,15 +38,14 @@ public class Patient {
                 ", name='" + name + '\'' +
                 ", contactNo='" + contactNo + '\'' +
                 ", address='" + address + '\'' +
+                ", user=" + user +
                 '}';
     }
 
-    public Patient() {
-    }
-
-    public Patient(String name, String contactNo, String address) {
+    public Patient(String name, String contactNo, String address, User user) {
         this.name = name;
         this.contactNo = contactNo;
         this.address = address;
+        this.user = user;
     }
 }

@@ -1,6 +1,7 @@
 package com.dpms.controller;
 
 import com.dpms.bean.Doctor;
+import com.dpms.dto.DoctorDto;
 import com.dpms.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/doctor")
+@CrossOrigin(origins = "*")
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
     @PostMapping
-    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor){
-        Doctor insertedDoctor = doctorService.addDoctor(doctor);
+    public ResponseEntity<Doctor> addDoctor(@RequestBody DoctorDto doctorDto){
+        Doctor insertedDoctor = doctorService.addDoctor(doctorDto);
         if(insertedDoctor==null)
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         else

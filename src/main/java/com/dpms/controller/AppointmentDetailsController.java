@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/appointment")
+@CrossOrigin(origins = "*")
 public class AppointmentDetailsController {
     @Autowired
     private AppointmentService appointmentService;

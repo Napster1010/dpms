@@ -1,8 +1,11 @@
 package com.dpms.service;
 
 import com.dpms.bean.Patient;
+import com.dpms.bean.User;
+import com.dpms.dto.PatientDto;
 import com.dpms.repository.AppointmentDetailsRepository;
 import com.dpms.repository.PatientRepository;
+import com.dpms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,13 @@ public class PatientService {
     @Autowired
     private AppointmentDetailsRepository appointmentDetailsRepository;
 
-    public Patient addPatient(Patient patient){
+    @Autowired
+    private UserRepository userRepository;
+
+    public Patient addPatient(PatientDto patientDto){
+        User user = new User(patientDto.getUsername(), patientDto.getPassword(), "patient");
+        User insertedUser = userRepository.save(user);
+        Patient patient = new Patient(patientDto.getName(), patientDto.getContactNo(), patientDto.getAddress(), insertedUser);
         Patient insertedPatient = patientRepository.save(patient);
         return insertedPatient;
     }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/branch")
+@CrossOrigin(origins = "*")
 public class HospitalController {
     @Autowired
     private HospitalService hospitalService;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -23,10 +24,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/login")
-    public ResponseEntity<User> authenticateUser(@RequestParam String username, @RequestParam String password, @RequestParam String userType){
-        User user = userService.authenticateUser(username, password, userType);
+    public ResponseEntity<User> authenticateUser(@RequestParam String username, @RequestParam String password){
+        User user = userService.authenticateUser(username, password);
         if(user==null)
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         else
             return new ResponseEntity<>(user, HttpStatus.OK);
     }

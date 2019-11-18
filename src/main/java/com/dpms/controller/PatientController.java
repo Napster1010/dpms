@@ -3,6 +3,7 @@ package com.dpms.controller;
 import com.dpms.bean.AppointmentDetails;
 import com.dpms.bean.Patient;
 import com.dpms.dto.AppointmentDetailsDto;
+import com.dpms.dto.PatientDto;
 import com.dpms.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patient")
+@CrossOrigin(origins = "*")
 public class PatientController {
     @Autowired
     private PatientService patientService;
 
     @PostMapping
-    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient){
-        Patient insertedPatient = patientService.addPatient(patient);
+    public ResponseEntity<Patient> addPatient(@RequestBody PatientDto patientDto){
+        Patient insertedPatient = patientService.addPatient(patientDto);
         if(insertedPatient==null)
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         else

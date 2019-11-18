@@ -2,6 +2,7 @@ package com.dpms.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
@@ -25,7 +26,14 @@ public class Doctor {
     private String designation;
 
     @Column(name = "consultation_fee")
-    private long consultationFee;
+    private int consultationFee;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private User user;
+
+    public Doctor() {
+    }
 
     @Override
     public String toString() {
@@ -35,16 +43,15 @@ public class Doctor {
                 ", specialization='" + specialization + '\'' +
                 ", designation='" + designation + '\'' +
                 ", consultationFee=" + consultationFee +
+                ", user=" + user +
                 '}';
     }
 
-    public Doctor() {
-    }
-
-    public Doctor(String name, String specialization, String designation, int consultationFee) {
+    public Doctor(String name, String specialization, String designation, int consultationFee, User user) {
         this.name = name;
         this.specialization = specialization;
         this.designation = designation;
         this.consultationFee = consultationFee;
+        this.user = user;
     }
 }
