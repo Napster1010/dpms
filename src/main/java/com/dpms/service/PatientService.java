@@ -34,4 +34,10 @@ public class PatientService {
         List<Patient> patients = patientRepository.findAll();
         return patients;
     }
+
+    public Patient getByPatientUsername(String patientUsername){
+        User patientUser = userRepository.findByUsername(patientUsername);
+        Patient patient = patientRepository.findByUser(patientUser);
+        return patient;
+    }
 }

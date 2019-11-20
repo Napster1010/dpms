@@ -21,20 +21,37 @@ public class AppointmentDetailsController {
 
     @PostMapping
     public ResponseEntity<AppointmentDetails> bookAppointment(@RequestBody AppointmentDetailsDto appointmentDetailsDto){
-        AppointmentDetails appointmentDetails = appointmentService.bookAppointment(appointmentDetailsDto.getPatientId(), appointmentDetailsDto.getDoctorId(), appointmentDetailsDto.getBranchId(), appointmentDetailsDto.getDateOfAppointment());
+        AppointmentDetails appointmentDetails = appointmentService.bookAppointment(appointmentDetailsDto.getPatientUsername(), appointmentDetailsDto.getDoctorUsername(), appointmentDetailsDto.getBranchCode(), appointmentDetailsDto.getDateOfAppointment());
         if(appointmentDetails==null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity<>(appointmentDetails, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<AppointmentDetails>> getAppointmentsByDoctorIdAndDate(@RequestParam("doctorId") Long doctorId, @RequestParam("appointmentDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate appointmentDate){
-        List<AppointmentDetails> appointmentDetails = appointmentService.getAppointmentsByDoctorIdAndDate(doctorId, appointmentDate);
+    @GetMapping(value = "/requested")
+    public ResponseEntity<List<AppointmentDetails>> getRequestedAppointments(){
+        List<AppointmentDetails> appointmentDetails = appointmentService.getRequestedAppointments();
+        if(appointmentDetails==null)
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        else
+            return new ResponseEntity<>(appointmentDetails, HttpStatus.OK);
+    }
+
+    @GetMapping(params = {"doctorUsername"})
+    public ResponseEntity<List<AppointmentDetails>> getAppointmentsByDoctorUsername(@RequestParam("doctorUsername") String doctorUsername){
+        List<AppointmentDetails> appointmentDetails = appointmentService.getAppointmentsByDoctorUsername(doctorUsername);
         if(appointmentDetails==null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         else
             return new ResponseEntity<>(appointmentDetails, HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<AppointmentDetails> updateAppointmentDetails(@RequestBody AppointmentDetails appointmentDetails){
+        AppointmentDetails updatedAppointmentDetails = appointmentService.updateAppointmentDetails(appointmentDetails);
+        if(updatedAppointmentDetails==null)
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        else
+            return new ResponseEntity<>(updatedAppointmentDetails, HttpStatus.OK);
+    }
 }

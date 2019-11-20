@@ -4,19 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "Branch")
 @Table(name = "branch")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Branch {
+public class Branch implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "branch_code")
-    private String branchCode;
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "address")
     private String address;
@@ -25,16 +29,19 @@ public class Branch {
     public String toString() {
         return "Branch{" +
                 "id=" + id +
-                ", branchCode='" + branchCode + '\'' +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    public Branch(String code, String name, String address) {
+        this.code = code;
+        this.name = name;
+        this.address = address;
     }
 
     public Branch() {
     }
 
-    public Branch(String branchCode, String address) {
-        this.branchCode = branchCode;
-        this.address = address;
-    }
 }

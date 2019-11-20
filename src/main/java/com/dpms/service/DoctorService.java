@@ -31,8 +31,9 @@ public class DoctorService {
         return doctors;
     }
 
-    public Doctor getDocotrById(Long doctorId){
-        Doctor doctor = doctorRepository.getOne(doctorId);
+    public Doctor getDoctorByUsername(String doctorUsername){
+        User doctorUser = userRepository.findByUsername(doctorUsername);
+        Doctor doctor = doctorRepository.findByUser(doctorUser);
         return doctor;
     }
 }

@@ -6,11 +6,11 @@ import java.time.LocalDate;
 
 @Data
 public class AppointmentDetailsDto {
-    private Long patientId;
+    private String patientUsername;
 
-    private Long doctorId;
+    private String doctorUsername;
 
-    private Long branchId;
+    private String branchCode;
 
     private LocalDate dateOfAppointment;
 }

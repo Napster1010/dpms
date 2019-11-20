@@ -5,12 +5,13 @@ import lombok.Data;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "Doctor")
 @Table(name = "doctor")
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Doctor {
+public class Doctor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

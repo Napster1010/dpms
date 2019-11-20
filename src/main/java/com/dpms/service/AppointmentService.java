@@ -1,13 +1,7 @@
 package com.dpms.service;
 
-import com.dpms.bean.AppointmentDetails;
-import com.dpms.bean.Branch;
-import com.dpms.bean.Doctor;
-import com.dpms.bean.Patient;
-import com.dpms.repository.AppointmentDetailsRepository;
-import com.dpms.repository.BranchRepository;
-import com.dpms.repository.DoctorRepository;
-import com.dpms.repository.PatientRepository;
+import com.dpms.bean.*;
+import com.dpms.repository.*;
 import com.dpms.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,24 +27,36 @@ public class AppointmentService {
     @Autowired
     private DoctorService doctorService;
 
-    public AppointmentDetails bookAppointment(Long patientId, Long doctorId, Long branchId, LocalDate dateOfAppointment){
-        Patient patient = patientRepository.getOne(patientId);
-        Doctor doctor = doctorRepository.getOne(doctorId);
-        Branch branch = branchRepository.getOne(branchId);
+    @Autowired
+    private UserRepository userRepository;
 
-        AppointmentDetails appointmentDetails = new AppointmentDetails(patient, doctor, branch, dateOfAppointment, Constants.APPOINTMENT_SCHEDULED);
+    public AppointmentDetails bookAppointment(String patientUsername, String doctorUsername, String branchCode, LocalDate dateOfAppointment){
+        User patientUser = userRepository.findByUsername(patientUsername);
+        Patient patient = patientRepository.findByUser(patientUser);
+        User doctorUser = userRepository.findByUsername(doctorUsername);
+        Doctor doctor = doctorRepository.findByUser(doctorUser);
+        Branch branch = branchRepository.findByCode(branchCode);
+
+        AppointmentDetails appointmentDetails = new AppointmentDetails(patient, doctor, branch, dateOfAppointment, Constants.APPOINTMENT_REQUESTED);
         AppointmentDetails insertedAppointmentDetails = appointmentDetailsRepository.save(appointmentDetails);
 
         return insertedAppointmentDetails;
     }
 
-    public List<AppointmentDetails> getAppointmentsByDoctorIdAndDate(Long doctorId, LocalDate dateOfAppointment){
-        Doctor doctor = doctorService.getDocotrById(doctorId);
-        if(doctor==null)
-            return null;
-
-        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByDoctorAndDateOfAppointment(doctor, dateOfAppointment);
+    public List<AppointmentDetails> getAppointmentsByDoctorUsername(String doctorUsername){
+        Doctor doctor = doctorService.getDoctorByUsername(doctorUsername);
+        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByDoctor(doctor);
         return appointmentDetails;
+    }
+
+    public List<AppointmentDetails> getRequestedAppointments(){
+        List<AppointmentDetails> requestedAppointments = appointmentDetailsRepository.findByStatus(Constants.APPOINTMENT_REQUESTED);
+        return requestedAppointments;
+    }
+
+    public AppointmentDetails updateAppointmentDetails(AppointmentDetails appointmentDetails){
+        AppointmentDetails updatedAppointmentDetails = appointmentDetailsRepository.save(appointmentDetails);
+        return updatedAppointmentDetails;
     }
 
 }

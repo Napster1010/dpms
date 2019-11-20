@@ -3,31 +3,34 @@ package com.dpms.bean;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Entity(name = "PatientDocument")
 @Table(name = "patient_document")
 @Data
-public class PatientDocument {
+public class PatientDocument implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @JoinColumn(name = "patient_username", referencedColumnName = "username")
     private Patient patient;
 
     @Column(name = "document")
     private byte[] document;
 
-    @OneToOne
-    @JoinColumn(name = "uploader_username", referencedColumnName = "username")
-    private User user;
-
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
+
+    @Column(name = "document_type")
+    private String documentType;
+
+    public PatientDocument() {
+    }
 
     @Override
     public String toString() {
@@ -35,18 +38,15 @@ public class PatientDocument {
                 "id=" + id +
                 ", patient=" + patient +
                 ", document=" + Arrays.toString(document) +
-                ", user=" + user +
                 ", timestamp=" + timestamp +
+                ", documentType='" + documentType + '\'' +
                 '}';
     }
 
-    public PatientDocument() {
-    }
-
-    public PatientDocument(Patient patient, byte[] document, User user, LocalDateTime timestamp) {
+    public PatientDocument(Patient patient, byte[] document, LocalDateTime timestamp, String documentType) {
         this.patient = patient;
         this.document = document;
-        this.user = user;
         this.timestamp = timestamp;
+        this.documentType = documentType;
     }
 }
