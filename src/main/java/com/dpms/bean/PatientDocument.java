@@ -29,8 +29,9 @@ public class PatientDocument implements Serializable {
     @Column(name = "document_type")
     private String documentType;
 
-    public PatientDocument() {
-    }
+    @OneToOne
+    @JoinColumn(name = "doctor_username", referencedColumnName = "username")
+    private Doctor doctor;
 
     @Override
     public String toString() {
@@ -40,13 +41,18 @@ public class PatientDocument implements Serializable {
                 ", document=" + Arrays.toString(document) +
                 ", timestamp=" + timestamp +
                 ", documentType='" + documentType + '\'' +
+                ", doctor=" + doctor +
                 '}';
     }
 
-    public PatientDocument(Patient patient, byte[] document, LocalDateTime timestamp, String documentType) {
+    public PatientDocument(Patient patient, byte[] document, LocalDateTime timestamp, String documentType, Doctor doctor) {
         this.patient = patient;
         this.document = document;
         this.timestamp = timestamp;
         this.documentType = documentType;
+        this.doctor = doctor;
+    }
+
+    public PatientDocument() {
     }
 }

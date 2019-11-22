@@ -30,6 +30,9 @@ public class AppointmentService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PatientService patientService;
+
     public AppointmentDetails bookAppointment(String patientUsername, String doctorUsername, String branchCode, LocalDate dateOfAppointment){
         User patientUser = userRepository.findByUsername(patientUsername);
         Patient patient = patientRepository.findByUser(patientUser);
@@ -45,7 +48,13 @@ public class AppointmentService {
 
     public List<AppointmentDetails> getAppointmentsByDoctorUsername(String doctorUsername){
         Doctor doctor = doctorService.getDoctorByUsername(doctorUsername);
-        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByDoctor(doctor);
+        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByDoctorAndStatus(doctor, Constants.APPOINTMENT_BOOKED);
+        return appointmentDetails;
+    }
+
+    public List<AppointmentDetails> getAppointmentsByPatientUsername(String patientUsername){
+        Patient patient = patientService.getByPatientUsername(patientUsername);
+        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByPatient(patient);
         return appointmentDetails;
     }
 

@@ -1,9 +1,8 @@
 package com.dpms.service;
 
+import com.dpms.bean.Doctor;
 import com.dpms.bean.Patient;
 import com.dpms.bean.PatientDocument;
-import com.dpms.bean.User;
-import com.dpms.dto.PatientDocumentDto;
 import com.dpms.repository.PatientDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,13 @@ public class PatientDocumentService {
     @Autowired
     private PatientService patientService;
 
-    public PatientDocument uploadPatientDocument(MultipartFile document, String documentType, String patientUsername) throws Exception{
+    @Autowired
+    private DoctorService doctorService;
+
+    public PatientDocument uploadPatientDocument(MultipartFile document, String documentType, String patientUsername, String doctorUsername) throws Exception{
         Patient patient = patientService.getByPatientUsername(patientUsername);
-        PatientDocument patientDocument = new PatientDocument(patient, document.getBytes(), LocalDateTime.now(), documentType);
+        Doctor doctor = doctorService.getDoctorByUsername(doctorUsername);
+        PatientDocument patientDocument = new PatientDocument(patient, document.getBytes(), LocalDateTime.now(), documentType, doctor);
         PatientDocument insertedPatientDocument = patientDocumentRepository.save(patientDocument);
         return insertedPatientDocument;
     }

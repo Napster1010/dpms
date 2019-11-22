@@ -4,12 +4,10 @@ import com.dpms.bean.AppointmentDetails;
 import com.dpms.dto.AppointmentDetailsDto;
 import com.dpms.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,9 +35,18 @@ public class AppointmentDetailsController {
             return new ResponseEntity<>(appointmentDetails, HttpStatus.OK);
     }
 
-    @GetMapping(params = {"doctorUsername"})
+    @GetMapping(value = "/doctor", params = {"doctorUsername"})
     public ResponseEntity<List<AppointmentDetails>> getAppointmentsByDoctorUsername(@RequestParam("doctorUsername") String doctorUsername){
         List<AppointmentDetails> appointmentDetails = appointmentService.getAppointmentsByDoctorUsername(doctorUsername);
+        if(appointmentDetails==null)
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<>(appointmentDetails, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/patient", params = {"patientUsername"})
+    public ResponseEntity<List<AppointmentDetails>> getAppointmentDetailsByPatientUsername(@RequestParam("patientUsername") String patientUsername){
+        List<AppointmentDetails> appointmentDetails = appointmentService.getAppointmentsByPatientUsername(patientUsername);
         if(appointmentDetails==null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         else
